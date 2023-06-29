@@ -1,6 +1,7 @@
-#Cloud Providers
+#Constants
 IaaS = "iaas"
 Provisioner = "provisioner"
+IsProvisioned = "provisioned"
 
 AWS = "aws"
 Azure = "azure"
@@ -37,6 +38,7 @@ Google Cloud GKE cluster can be deployed using console. We dont support Infrastr
 
 #Prompts
 iaasPrompt = 'Where is the Kubernetes cluster running/planned to be run?'
+isProvisionerPromt = 'Is the Kubernetes cluster already provisioned?'
 awsProvisionerPromt = 'How would you like to deploy EKS?'
 azureProvisionerPromt = 'How would you like to deploy AKS?'
 gcpProvisionerPromt = 'How would you like to deploy GKE?'
