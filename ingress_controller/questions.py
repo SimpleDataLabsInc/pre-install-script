@@ -4,7 +4,6 @@ import iaas.consts as iaasConsts
 
 def IngressControllerInstallQuestions(cloud=None):
     result = {}
-    print(cloud, iaasConsts.AWS)
     if cloud == iaasConsts.AWS:
         questions = [
             {
