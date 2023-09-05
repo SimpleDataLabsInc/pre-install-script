@@ -8,6 +8,7 @@ CertManagerVal = "certManager"
 ProphecyManaged = "Prophecy managed DNS and certificate.(ACME protocol backed by Lets-Encrypt)"
 ProphecyManagedVal = "prophecyManaged"
 CertificateProvider = "certificateProvider"
+RootURL             = "rootURL"
 CertificateSecret = "certificateSecret"
 CertificateIssuer = "certificateIssuer"
 
@@ -22,6 +23,7 @@ generate the certificates on demand from ingress resources requiring TLS.
 CertificatePrompt = 'How do you wish to provide the certificate?'
 CertificateSecretPrompt = 'What is the secret that stores the certificate?'
 CertificateIssuerPrompt = 'What is the (cluster)issuer associated with cert-manager?'
+RootURLPrompt = 'What is the root URL to access Prophecy?'
 
 # Options
 CertificateOptions = [

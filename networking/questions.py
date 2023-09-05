@@ -16,16 +16,16 @@ def IngressQuestions(ask=True):
     r = questionary.prompt(questions)
     result.update(r)
 
-    if result[consts.internetIngress]:
-        questions = [
-            {
-                'type': 'confirm',
-                'name': consts.prophecyManagedDNSandCert,
-                'message': consts.prophecyManagedDNSAndCertPromt
-            },
-        ]
-        r = questionary.prompt(questions)
-        result.update(r)
+    # if result[consts.internetIngress]:
+    #     questions = [
+    #         {
+    #             'type': 'confirm',
+    #             'name': consts.prophecyManagedDNSandCert,
+    #             'message': consts.prophecyManagedDNSAndCertPromt
+    #         },
+    #     ]
+    #     r = questionary.prompt(questions)
+    #     result.update(r)
     return result
 
 
@@ -64,10 +64,10 @@ def GetFlagsFromResponse(networkingResponse):
     flags = ""
 
     if networkingResponse['ingress'][consts.internetIngress]:
-        if networkingResponse['ingress'][consts.prophecyManagedDNSandCert]:
-            flags = "--set global.prophecy.wildcardCert.useExternal=false"
-        else:
-            flags = "--set global.prophecy.wildcardCert.useExternal=true"
+        # if networkingResponse['ingress'][consts.prophecyManagedDNSandCert]:
+        #     flags = "--set global.prophecy.wildcardCert.useExternal=false"
+        # else:
+        #     flags = "--set global.prophecy.wildcardCert.useExternal=true"
         flags = flags + " " + "--set athena.isDarkCluster=false"
     else:
         flags = flags + " " + "--set athena.isDarkCluster=true"

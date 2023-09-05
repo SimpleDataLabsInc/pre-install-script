@@ -11,7 +11,7 @@ import lognmonitoring.questions as logMonQuestions
 if __name__ == '__main__':
     result = {}
 
-    helmCommand = "helm upgrade -i -n prophecy"
+    helmCommand = "helm upgrade -i -n prophecy prophecy/prophecy-installer --version <prohecy-version>"
 
     try:
         customerResponse = customerQuestions.AskCustomerQuestions()
@@ -35,12 +35,12 @@ if __name__ == '__main__':
         helmCommand = helmCommand + " " + imgRegistryQuestions.GetFlagsFromResponse(imageRegistryResponse)
         helmCommand = helmCommand + " " + certQuestions.GetFlagsFromResponse(certResponse)
         helmCommand = helmCommand + " " + logMonQuestions.GetFlagsFromResponse(logMonitoringResponse)
-        print(helmCommand)
+
 
     except KeyboardInterrupt:
         # your chance to handle the keyboard interrupt
         print("Cancelled by user")
     finally:
-        print(result)
-
-
+        #print(result)
+        print("\nHelm command to run:")
+        print(helmCommand)

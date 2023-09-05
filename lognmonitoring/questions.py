@@ -34,7 +34,7 @@ def GetFlagsFromResponse(response):
     if response[consts.LoggingRequired]:
         flags = flags + " " + "--set platform.loki.enabled=true"
         flags = flags + " " + "--set platform.promtail.enabled=true"
-    else
+    else:
         flags = flags + " " + "--set platform.loki.enabled=false"
         flags = flags + " " + "--set platform.promtail.enabled=false"
 
@@ -45,6 +45,8 @@ def GetFlagsFromResponse(response):
         else:
             flags = flags + " " + "--set platform.prometheusStandalone.enabled=false"
             flags = flags + " " + "--set platform.prometheusStack.enabled=true"
-    else
+    else:
         flags = flags + " " + "--set platform.prometheusStandalone.enabled=false"
         flags = flags + " " + "--set platform.prometheusStack.enabled=false"
+
+    return flags
