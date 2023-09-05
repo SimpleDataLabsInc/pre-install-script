@@ -40,3 +40,16 @@ def AskCertificateQuestions(cloud=None):
 
     return result
 
+def GetFlagsFromResponse(certResponse):
+    flags = ""
+
+    if certResponse[consts.CertificateProvider] == consts.CertSecretVal:
+        flags = flags + " " + "--set global.prophecy.wildcardCert.name=" + certResponse[consts.CertificateSecret]
+        flags = flags + " " + "--set global.prophecy.wildcardCert.useExternal=false"
+    elif certResponse[consts.CertificateProvider] == consts.CertManagerVal:
+        flags = flags + " " + "--set global.prophecy.wildcardCert.name=" + certResponse[consts.CertificateSecret]
+        flags = flags + " " + "--set global.prophecy.wildcardCert.useExternal=false"
+    elif certResponse[consts.CertificateProvider] == consts.ProphecyManagedVal:
+        flags = flags + " " + "--set global.prophecy.wildcardCert.useExternal=true"
+
+    return flags

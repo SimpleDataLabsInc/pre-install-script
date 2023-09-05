@@ -68,3 +68,19 @@ def AskIngressControllerQuestions(cloud=None):
     result.update(IngressControllerInstallQuestions(cloud))
     return result
 
+def GetFlagsFromResponse(ingressResponse):
+    flags = ""
+
+    if ingressResponse[consts.IsIngressControllerPresent]:
+        flags = flags + " " + "--set platform.ingressNginx.enabled=false"
+        if ingressResponse[consts.IngressControllerType] == consts.Nginx or \
+                ingressResponse[consts.IngressControllerType] == consts.Multiple:
+            flags = flags + " " + "--set global.ingressController.class="+ingressResponse[consts.IngressControllerClass]
+            flags = flags + " " + "--set global.ingressController.type="+consts.Nginx
+        else:
+            flags = flags + " " + "--set global.ingressController.type="+consts.Istio
+    else:
+        if ingressResponse[consts.IsTLSLBTermination]:
+            flags = flags + " " + "--set platform.ingressNginx.enabled=true"
+            flags = flags + " " + "--set platform.\"ingress-nginx\".controller.service.certificateARN="+ingressResponse[consts.TLSCertificateARN]
+    return flags

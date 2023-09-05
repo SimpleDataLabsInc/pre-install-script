@@ -36,3 +36,9 @@ def AskImageRegistryQuestions(cloud=None):
 
     return result
 
+def GetFlagsFromResponse(response):
+    flags = ""
+    if response[consts.IsPrivateImageRegistry]:
+        flags = flags + " " + "--set global.prophecy.imagePullSecret=" + response[consts.PrivateImageRegistrySecret]
+        flags = flags + " " + "--set global.repository=" + response[consts.PrivateImageRegistry]
+    return flags
