@@ -80,7 +80,7 @@ def GetFlagsFromResponse(ingressResponse):
         else:
             flags = flags + " " + "--set global.ingressController.type="+consts.Istio
     else:
-        if ingressResponse[consts.IsTLSLBTermination]:
+        if (consts.IsTLSLBTermination in ingressResponse.keys()) and (ingressResponse[consts.IsTLSLBTermination]):
             flags = flags + " " + "--set platform.ingressNginx.enabled=true"
             flags = flags + " " + "--set platform.\"ingress-nginx\".controller.service.certificateARN="+ingressResponse[consts.TLSCertificateARN]
     return flags

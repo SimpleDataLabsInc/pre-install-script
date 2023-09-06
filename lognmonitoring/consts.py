@@ -1,7 +1,7 @@
 # Constants
 LoggingRequired = "loggingRequired"
 MonitoringRequired = "monitoringRequired"
-Namespaced = "namespaced"
+ClusterRole = "clusterrole"
 
 # Documentation
 LoggingText = '''
@@ -19,7 +19,7 @@ Prometheus. Just the memory and cpu utilization from metric server is pulled in 
 '''
 
 # Promts
-IsNamespacedPromt = "Is Prophecy and platform deployed with a namespaced role or cluster role?"
+IsClusterRolePromt = "Is Prophecy and platform deployed cluster role?"
 LoggingRequiredPrompt = "Should logging components be deployed?"
 MonitoringRequiredPrompt = "Should monitoring components be deployed?"
 

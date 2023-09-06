@@ -42,5 +42,5 @@ if __name__ == '__main__':
         print("Cancelled by user")
     finally:
         #print(result)
-        print("\nHelm command to run:")
+        print("\nHelm command to run(cluster role required to run this command):")
         print(helmCommand)

@@ -13,6 +13,7 @@ def IngressQuestions(ask=True):
     ]
 
     print(consts.ingressText)
+    print(consts.egressText)
     r = questionary.prompt(questions)
     result.update(r)
 
@@ -52,8 +53,8 @@ def AskNetworkingQuestions(cloud=None):
     ingResult = IngressQuestions()
     result['ingress'] = ingResult
 
-    egResult = EgressQuestions()
-    result['egress'] = egResult
+    # egResult = EgressQuestions()
+    # result['egress'] = egResult
 
     # use cloud to create questions pertaining to the cloud provider.
 
@@ -69,12 +70,9 @@ def GetFlagsFromResponse(networkingResponse):
         # else:
         #     flags = "--set global.prophecy.wildcardCert.useExternal=true"
         flags = flags + " " + "--set athena.isDarkCluster=false"
-    else:
-        flags = flags + " " + "--set athena.isDarkCluster=true"
-
-    if networkingResponse['egress'][consts.internetEgress]:
         flags = flags + " " + "--set athena.controlcenter.disabled=false"
     else:
+        flags = flags + " " + "--set athena.isDarkCluster=true"
         flags = flags + " " + "--set athena.controlcenter.disabled=true"
 
     return flags

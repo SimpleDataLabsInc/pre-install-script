@@ -7,8 +7,8 @@ def AskLoggingAndMonitoringQuestions(cloud=None):
     questions = [
         {
             'type': 'confirm',
-            'name': consts.Namespaced,
-            'message': consts.IsNamespacedPromt
+            'name': consts.ClusterRole,
+            'message': consts.IsClusterRolePromt
         },
         {
             'type': 'confirm',
@@ -39,7 +39,7 @@ def GetFlagsFromResponse(response):
         flags = flags + " " + "--set platform.promtail.enabled=false"
 
     if response[consts.MonitoringRequired]:
-        if response[consts.Namespaced]:
+        if not response[consts.ClusterRole]:
             flags = flags + " " + "--set platform.prometheusStandalone.enabled=true"
             flags = flags + " " + "--set platform.prometheusStack.enabled=false"
         else:

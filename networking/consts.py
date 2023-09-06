@@ -42,7 +42,7 @@ instances deployed in the subnets. The authentication to the container registry 
 
 # Prompts
 prophecyManagedDNSAndCertPromt = 'Do you want Prophecy to manage DNS and Certificate?'
-ingressnetworkingPromt = 'Is ingress traffic enabled from the Internet?'
+ingressnetworkingPromt = 'Is traffic enabled from the Internet?'
 egressnetworkingPromt = 'Is egress traffic disabled to the Internet?'
 
 # Options
