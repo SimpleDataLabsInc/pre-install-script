@@ -1,12 +1,13 @@
 # Constants
+section_name = "image_repository"
 IsPrivateImageRegistry = "isPrivateImageRegistry"
 PrivateImageRegistrySecret = "imageRegistrySecret"
 PrivateImageRegistry = "imageRegistry"
 
 # Documentation
 ImageRegistryText = '''
-By default, the images are pulled from `gcr.io/prophecy-share` container registry. If the customer wishes to provide their
-own container registry, there are provisions in the helm chart to provide the pull secret and private image registry.
+By default, the images are pulled from `gcr.io/prophecy-share` container registry. If you wishe to provide your
+own container registry there are provisions in the helm chart to provide the pull secret and private image registry.
 '''
 
 # Prompt

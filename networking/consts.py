@@ -1,4 +1,5 @@
 # Constants
+section_name = "networking"
 internetIngress = "internetIngress"
 internetEgress = 'internetEgress'
 prophecyManagedDNSandCert = "prophecyManagedDNSandCertificate"
@@ -10,20 +11,20 @@ repositories, execution environment to push execution status and access to Proph
 virtual network the Kubernetes cluster is deployed. Prophecy has a call back home endpoint used to push updates and upgrades 
 which also requires access to the Internet.
 
-Customers can choose to disable ingress and egress to the internet from the virtual network. This can be done by deploying
-the Kubernetes cluster entirely in private subnets or adding restrictive access control.  In such scenarios, they have to ensure
+You can choose to disable ingress and egress to the internet from the virtual network. This can be done by deploying
+the Kubernetes cluster entirely in private subnets or adding restrictive access control.  In such scenarios, you have to ensure
 that Prophecy images are available to the Kubernetes cluster. Prophecy should be 
-accesible from the the workstations and the execution environment.
+accesible from workstations and the execution environment.
 '''
 
 ingressText = '''
 Since Prophecy needs to be deployed using an nginx service backed by a domain, we require a loadbalancer for Ingress. The
-loadbalancer IP/domain will need to be added to the DNS zone to enable DNS resolution. The customer is responsible to managing
+loadbalancer IP/domain will need to be added to the DNS zone to enable DNS resolution. You are responsible for managing
 the domain and DNS resolution. An option to leverage Prophecy managed domain and DNS resolution is available in case Internet
-is accessible for DNS resolution. The customer can also choose to disable ingress from the Internet. For the same, the customer
+is accessible for DNS resolution. You can also choose to disable ingress from the Internet. You
 can deploy an internal loadbalancer which will not have a public IP address. This can be deployed into private subnets and 
-removes the requirement of having a public subnet. The customer is responsible to ensure connectivity to this loadbalancer 
-from their workstation to access Prophecy UI and from the Spark environment to populate interims from pipeline execution.
+removes the requirement of having a public subnet. You would then be responsible to ensure connectivity to this loadbalancer 
+from your workstation to access Prophecy UI and from the Spark environment to populate interims from pipeline execution.
 '''
 
 egressText = '''
@@ -36,7 +37,7 @@ fabric.
 
 Egress to the container registry is mandatory. If the image registry leveraged is Prophecy-managed public repository, then egress
 to the Internet is mandatory. If the repository used is private and egress to Internet is disabled then the repository needs to 
-be available within the private subnets via private endpoints. The customer has to ensure that the repository is reachable from 
+be available within the private subnets via private endpoints. You to ensure that the repository is reachable from 
 instances deployed in the subnets. The authentication to the container registry can be using image pull secrets or instance roles.
 '''
 
