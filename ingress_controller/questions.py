@@ -26,7 +26,7 @@ def AskIngressControllerQuestions(global_state):
             'type': 'text',
             'name': consts.IngressControllerClass,
             'message': consts.IngressControllerClassPrompt,
-            'when': lambda st: st[consts.IngressControllerType] in [consts.Nginx, consts.Multiple] == True
+            'when': lambda st: st[consts.IngressControllerType] == consts.Nginx or st[consts.IngressControllerType] == consts.Multiple
         },
         {
             'type': 'confirm',
@@ -42,7 +42,7 @@ def AskIngressControllerQuestions(global_state):
         }
     ]
     questions = state_or_defaults(ingress_state, [], questions)
-    r = questionary.prompt(questions)
+    r = questionary.unsafe_prompt(questions)
     ingress_state.update(r)
 
     update_and_persist(global_state, consts.section_name, ingress_state)

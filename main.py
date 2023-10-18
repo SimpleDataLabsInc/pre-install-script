@@ -12,10 +12,9 @@ import lognmonitoring.questions as logMonQuestions
 if __name__ == '__main__':
     result = {}
 
-    helmCommand = "helm upgrade -i -n prophecy prophecy/prophecy-installer --version <prohecy-version>"
-
     try:
         state = ask_load_state()
+        
         customerQuestions.AskCustomerQuestions(state)
         iaasQuestions.AskIaasQuestions(state)
         networkingQuestions.AskNetworkingQuestions(state)
@@ -38,12 +37,13 @@ if __name__ == '__main__':
         helmCommand = helmCommand + " " + imgRegistryQuestions.GetFlagsFromResponse(state)
         helmCommand = helmCommand + " " + certQuestions.GetFlagsFromResponse(state)
         helmCommand = helmCommand + " " + logMonQuestions.GetFlagsFromResponse(state)
+        
+        questionary.print("Please run this command to add the helm chart to your repository:")
+        questionary.print("helm repo add prophecy https://prophecy-chart.s3.amazonaws.com", style="bold italic fg:ansigreen")
+        questionary.print("\n\nHelm command to run to install Prophecy (cluster role required to run this command):")
+        questionary.print(helmCommand, style="bold italic fg:ansigreen")
 
 
     except KeyboardInterrupt:
         # your chance to handle the keyboard interrupt
-        print("Cancelled by user")
-    finally:
-        #print(result)
-        print("\nHelm command to run(cluster role required to run this command):")
-        print(helmCommand)
+        print("Script cancelled by user")

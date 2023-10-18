@@ -1,6 +1,6 @@
 import certificate.consts as consts
 import questionary
-from  utils import state_or_defaults, update_and_persist, state_section
+from  utils import state_or_defaults, update_and_persist, state_section, check_result_none
 
 def AskCertificateQuestions(global_state):
     cert_state = state_section(global_state, consts.section_name)
@@ -41,7 +41,7 @@ def AskCertificateQuestions(global_state):
         }
     ]
     questions = state_or_defaults(cert_state, [], questions)
-    r = questionary.prompt(questions)
+    r = questionary.unsafe_prompt(questions)
     update_and_persist(global_state, consts.section_name, r)
 
 def GetFlagsFromResponse(global_state):
