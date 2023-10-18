@@ -28,7 +28,7 @@ def AskImageRegistryQuestions(global_state):
         }
     ]
     questions = state_or_defaults(reg_state, [], questions)
-    r = questionary.prompt(questions)
+    r = questionary.unsafe_prompt(questions)
     update_and_persist(global_state, consts.section_name, r)
 
 def GetFlagsFromResponse(global_state):

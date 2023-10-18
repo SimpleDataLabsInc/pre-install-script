@@ -1,7 +1,7 @@
 import sys, string
 import customer.consts as consts
 import questionary
-from  utils import state_or_defaults, update_and_persist, state_section
+from  utils import state_or_defaults, update_and_persist, state_section, check_result_none
 
 def CustomerQuestions(cust_state):
     # Question regarding the deployment environment
@@ -15,7 +15,7 @@ def CustomerQuestions(cust_state):
     ]
 
     questions = state_or_defaults(cust_state, [], questions)
-    return questionary.prompt(questions)
+    return questionary.unsafe_prompt(questions)
 
 
 def AskCustomerQuestions(global_state):
