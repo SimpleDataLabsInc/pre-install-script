@@ -77,6 +77,13 @@ def update_and_persist(state, section_name: str|List, results, merge=False):
 def check_result_none(results):
     for v in results.values():
         if v is None:
-            return True
-        
-    return False
+def get_prophecy_version() -> Optional[str]:
+    try:
+        resp = requests.get("https://app.prophecy.io/athena/api/v1/cluster").json()
+        current_version:str = resp["current_version"]["controlplane_version"]
+        version_segments = current_version.split(".")
+        major_version = ".".join(version_segments[:-1])
+        return major_version + "-" + version_segments[-1]
+    except Exception as e:
+        breakpoint()
+        return None

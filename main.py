@@ -1,5 +1,5 @@
 import questionary
-from utils import ask_load_state
+from utils import ask_load_state, get_prophecy_version
 import iaas.questions as iaasQuestions
 import customer.questions as customerQuestions
 import iaas.consts as iaasConsts
@@ -23,6 +23,14 @@ if __name__ == '__main__':
         imgRegistryQuestions.AskImageRegistryQuestions(state)
         certQuestions.AskCertificateQuestions(state)
         logMonQuestions.AskLoggingAndMonitoringQuestions(state)
+
+        print("*" * 20)
+        prophecy_version = get_prophecy_version()
+        if prophecy_version is None:
+            questionary.print("Unable to load the current release version of Prophecy. Please contact the Prophecy engineer for the current version.", style="bold italic fg:darkred")
+            prophecy_version = "<prophecy_version>"
+
+        helmCommand = f"helm upgrade -i -n prophecy prophecy/prophecy-installer --version {prophecy_version}"
 
         helmCommand = helmCommand + " " + customerQuestions.GetFlagsFromResponse(state)
         helmCommand = helmCommand + " " + networkingQuestions.GetFlagsFromResponse(state)
