@@ -7,3 +7,6 @@ venv/*
 .idea/*
 
 pre-install.iml
+
+.python-version
+state.json
