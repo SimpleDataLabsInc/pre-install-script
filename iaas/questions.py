@@ -1,11 +1,15 @@
 import iaas.consts as consts
 import questionary
+from  utils import state_or_defaults, update_and_persist, state_section
 
 
-def IaasQuestions():
+def IaasQuestions(iaas_state):
     # Question regarding the deployment environment
-    result = {}
     questions = [
+        {
+            'type': 'print',
+            'message': consts.iaasText
+        },
         {
             'type': 'select',
             'name': consts.IaaS,
@@ -15,79 +19,78 @@ def IaasQuestions():
         {
             'type': 'confirm',
             'name' : consts.IsProvisioned,
-            'message': consts.isProvisionerPromt
+            'message': consts.isProvisionedPrompt
         },
     ]
-
-    print(consts.iaasText)
-    result.update(questionary.prompt(questions))
-    return result
+    questions = state_or_defaults(iaas_state, [], questions)
+    return questionary.prompt(questions)
 
 
-def AWSIaaSQuestions():
-    result = {}
+def AWSIaaSQuestions(iaas_state):
     questions = [
+        {
+            'type': 'print',
+            'message': consts.awsProvisionerText,
+            'when': lambda x: (not iaas_state.get(consts.IsProvisioned, False)) and iaas_state[consts.IaaS] == consts.AWS
+        },
         {
             'type': 'select',
             'name': consts.Provisioner,
-            'message': consts.awsProvisionerPromt,
-            'choices': consts.awsProvisioners
+            'message': consts.awsProvisionedPrompt,
+            'choices': consts.awsProvisioners,
+            'when': lambda x: (not iaas_state.get(consts.IsProvisioned, False)) and iaas_state[consts.IaaS] == consts.AWS
         },
     ]
+    questions = state_or_defaults(iaas_state, [], questions)
+    return questionary.prompt(questions)
 
-    print(consts.awsProvisionerText)
-    result.update(questionary.prompt(questions))
-    return result
-
-
-def AzureIaaSQuestions():
-    result = {}
+def AzureIaaSQuestions(iaas_state):
     questions = [
+        { 
+            'type': 'print',
+            'message': consts.azureProvisionerText,
+            'when': lambda x: (not iaas_state.get(consts.IsProvisioned, False)) and iaas_state[consts.IaaS] == consts.Azure
+        },
         {
             'type': 'select',
             'name': consts.Provisioner,
-            'message': consts.azureProvisionerPromt,
-            'choices': consts.azureProvisioners
+            'message': consts.azureProvisionedPrompt,
+            'choices': consts.azureProvisioners,
+            'when': lambda x: (not iaas_state.get(consts.IsProvisioned, False)) and iaas_state[consts.IaaS] == consts.Azure
         },
     ]
 
-    print(consts.azureProvisionerText)
-    result.update(questionary.prompt(questions))
-    return result
+    questions = state_or_defaults(iaas_state, [], questions)
+    return questionary.prompt(questions)
 
 
-def GCPIaaSQuestions():
-    result = {}
+def GCPIaaSQuestions(iaas_state):
     questions = [
+        { 
+            'type': 'print',
+            'message': consts.gcpProvisionerText,
+            'when': lambda x: (not iaas_state.get(consts.IsProvisioned, False)) and iaas_state[consts.IaaS] == consts.GCP
+        },
         {
             'type': 'select',
             'name': consts.Provisioner,
-            'message': consts.gcpProvisionerPromt,
-            'choices': consts.gcpProvisioners
+            'message': consts.gcpProvisionedPrompt,
+            'choices': consts.gcpProvisioners,
+            'when': lambda x: (not iaas_state.get(consts.IsProvisioned, False)) and iaas_state[consts.IaaS] == consts.GCP
         },
     ]
 
-    print(consts.gcpProvisionerText)
-    result.update(questionary.prompt(questions))
-    return result
+
+    questions = state_or_defaults(iaas_state, [], questions)
+    return questionary.prompt(questions)
 
 
-def AskIaasQuestions():
-    result = {}
-    response = IaasQuestions()
-    result.update(response)
-    if consts.IsProvisioned in response.keys() and not response[consts.IsProvisioned]:
-        if consts.IaaS in response.keys() and response[consts.IaaS] == consts.AWS:
-            r = AWSIaaSQuestions()
-            result.update(r)
-        elif consts.IaaS in response.keys() and response[consts.IaaS] == consts.Azure:
-            r = AzureIaaSQuestions()
-            result.update(r)
-        elif consts.IaaS in response.keys() and response[consts.IaaS] == consts.GCP:
-            q, p, r = GCPIaaSQuestions()
-            result.update(r)
-        else:
-            None
-    return result
+def AskIaasQuestions(global_state):
+    iaas_state = state_section(global_state, consts.section_name)
+    iaas_state.update(IaasQuestions(iaas_state))
+    iaas_state.update(AWSIaaSQuestions(iaas_state))
+    iaas_state.update(AzureIaaSQuestions(iaas_state))
+    iaas_state.update(GCPIaaSQuestions(iaas_state))
+    update_and_persist(global_state, consts.section_name, iaas_state)
 
 

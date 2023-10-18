@@ -1,86 +1,65 @@
 import questionary
 import ingress_controller.consts as consts
 import iaas.consts as iaasConsts
+from  utils import state_or_defaults, update_and_persist, state_section
 
-def IngressControllerInstallQuestions(cloud=None):
-    result = {}
-    if cloud == iaasConsts.AWS:
-        questions = [
-            {
-                'type': 'confirm',
-                'name': consts.IsTLSLBTermination,
-                'message': consts.IsTLSLBTerminationPromt
-            }
-        ]
-        r = questionary.prompt(questions)
-        result.update(r)
-
-        if r[consts.IsTLSLBTermination]:
-            questions = [
-                {
-                    'type': 'text',
-                    'name': consts.TLSCertificateARN,
-                    'message': consts.TLSCertificateARNPrompt
-                }
-            ]
-            r = questionary.prompt(questions)
-            result.update(r)
-    return result
-
-def AskIngressControllerQuestions(cloud=None):
-    result = {}
+def AskIngressControllerQuestions(global_state):
+    ingress_state = state_section(global_state, consts.section_name)
     questions = [
+        {
+            'type': 'print',
+            'message': consts.IngressControllerText
+        },
         {
             'type': 'confirm',
             'name': consts.IsIngressControllerPresent,
             'message': consts.IngressControllerPromt
         },
+        {
+            'type': 'select',
+            'name': consts.IngressControllerType,
+            'message': consts.IngressControllerTypePromt,
+            'choices': consts.IngressControllerTypeOptions,
+            'when': lambda st: st[consts.IsIngressControllerPresent] == True
+        },
+        {
+            'type': 'text',
+            'name': consts.IngressControllerClass,
+            'message': consts.IngressControllerClassPrompt,
+            'when': lambda st: st[consts.IngressControllerType] in [consts.Nginx, consts.Multiple] == True
+        },
+        {
+            'type': 'confirm',
+            'name': consts.IsTLSLBTermination,
+            'message': consts.IsTLSLBTerminationPromt,
+            'when': lambda _st: state_section(global_state, iaasConsts.section_name)[iaasConsts.IaaS] == iaasConsts.AWS
+        },
+        {
+            'type': 'text',
+            'name': consts.TLSCertificateARN,
+            'message': consts.TLSCertificateARNPrompt,
+            'when': lambda st: st[consts.IsTLSLBTermination] == True
+        }
     ]
-
-    print(consts.IngressControllerText)
+    questions = state_or_defaults(ingress_state, [], questions)
     r = questionary.prompt(questions)
-    result.update(r)
+    ingress_state.update(r)
 
-    if r[consts.IsIngressControllerPresent]:
-        questions = [
-            {
-                'type': 'select',
-                'name': consts.IngressControllerType,
-                'message': consts.IngressControllerTypePromt,
-                'choices': consts.IngressControllerTypeOptions
-            }
-        ]
-        r = questionary.prompt(questions)
-        result.update(r)
-        if r[consts.IngressControllerType] == consts.Nginx or \
-            r[consts.IngressControllerType] == consts.Multiple:
-            questions = [
-                {
-                    'type': 'text',
-                    'name': consts.IngressControllerClass,
-                    'message': consts.IngressControllerClassPrompt,
-                }
-            ]
-            r = questionary.prompt(questions)
-            result.update(r)
-        return result
+    update_and_persist(global_state, consts.section_name, ingress_state)
 
-    result.update(IngressControllerInstallQuestions(cloud))
-    return result
-
-def GetFlagsFromResponse(ingressResponse):
+def GetFlagsFromResponse(global_state):
     flags = ""
-
-    if ingressResponse[consts.IsIngressControllerPresent]:
+    ingress_state = state_section(global_state, consts.section_name)
+    if ingress_state[consts.IsIngressControllerPresent]:
         flags = flags + " " + "--set platform.ingressNginx.enabled=false"
-        if ingressResponse[consts.IngressControllerType] == consts.Nginx or \
-                ingressResponse[consts.IngressControllerType] == consts.Multiple:
-            flags = flags + " " + "--set global.ingressController.class="+ingressResponse[consts.IngressControllerClass]
+        if ingress_state[consts.IngressControllerType] == consts.Nginx or \
+                ingress_state[consts.IngressControllerType] == consts.Multiple:
+            flags = flags + " " + "--set global.ingressController.class="+ingress_state[consts.IngressControllerClass]
             flags = flags + " " + "--set global.ingressController.type="+consts.Nginx
         else:
             flags = flags + " " + "--set global.ingressController.type="+consts.Istio
     else:
-        if (consts.IsTLSLBTermination in ingressResponse.keys()) and (ingressResponse[consts.IsTLSLBTermination]):
+        if (consts.IsTLSLBTermination in ingress_state.keys()) and (ingress_state[consts.IsTLSLBTermination]):
             flags = flags + " " + "--set platform.ingressNginx.enabled=true"
-            flags = flags + " " + "--set platform.\"ingress-nginx\".controller.service.certificateARN="+ingressResponse[consts.TLSCertificateARN]
+            flags = flags + " " + "--set platform.\"ingress-nginx\".controller.service.certificateARN="+ingress_state[consts.TLSCertificateARN]
     return flags

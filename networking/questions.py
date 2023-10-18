@@ -1,10 +1,17 @@
 import networking.consts as consts
 import questionary
+from  utils import state_or_defaults, update_and_persist, state_section
 
-
-def IngressQuestions(ask=True):
-    result = {}
+def IngressQuestions(net_state):
     questions = [
+        { 
+            'type': 'print',
+            'message': consts.ingressText,
+        },
+        { 
+            'type': 'print',
+            'message': consts.egressText,
+        },
         {
             'type': 'confirm',
             'name': consts.internetIngress,
@@ -12,10 +19,8 @@ def IngressQuestions(ask=True):
         },
     ]
 
-    print(consts.ingressText)
-    print(consts.egressText)
-    r = questionary.prompt(questions)
-    result.update(r)
+    state_or_defaults(net_state, "ingress", questions)
+    return questionary.prompt(questions)
 
     # if result[consts.internetIngress]:
     #     questions = [
@@ -27,10 +32,9 @@ def IngressQuestions(ask=True):
     #     ]
     #     r = questionary.prompt(questions)
     #     result.update(r)
-    return result
 
 
-def EgressQuestions(ask=True):
+"""def EgressQuestions(ask=True):
     result = {}
     questions = [
         {
@@ -44,27 +48,26 @@ def EgressQuestions(ask=True):
     r = questionary.prompt(questions)
     result.update(r)
     return result
+"""
 
 
-def AskNetworkingQuestions(cloud=None):
-    result = {}
-    print(consts.networkingText)
+def AskNetworkingQuestions(global_state):
+    questionary.print(consts.networkingText)
 
-    ingResult = IngressQuestions()
-    result['ingress'] = ingResult
+    net_state = state_section(global_state, consts.section_name)
+    net_state["ingress"] = IngressQuestions(net_state)
+    update_and_persist(global_state, consts.section_name, net_state)
 
     # egResult = EgressQuestions()
     # result['egress'] = egResult
 
     # use cloud to create questions pertaining to the cloud provider.
 
-    return result
 
-
-def GetFlagsFromResponse(networkingResponse):
+def GetFlagsFromResponse(global_state):
     flags = ""
-
-    if networkingResponse['ingress'][consts.internetIngress]:
+    net_state = state_section(global_state, consts.section_name)
+    if net_state['ingress'][consts.internetIngress]:
         # if networkingResponse['ingress'][consts.prophecyManagedDNSandCert]:
         #     flags = "--set global.prophecy.wildcardCert.useExternal=false"
         # else:

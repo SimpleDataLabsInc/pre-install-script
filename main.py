@@ -1,4 +1,5 @@
 import questionary
+from utils import ask_load_state
 import iaas.questions as iaasQuestions
 import customer.questions as customerQuestions
 import iaas.consts as iaasConsts
@@ -14,27 +15,21 @@ if __name__ == '__main__':
     helmCommand = "helm upgrade -i -n prophecy prophecy/prophecy-installer --version <prohecy-version>"
 
     try:
-        customerResponse = customerQuestions.AskCustomerQuestions()
-        result = customerResponse
-        iaasResponse = iaasQuestions.AskIaasQuestions()
-        result['cloud'] = iaasResponse
-        networkingResponse = networkingQuestions.AskNetworkingQuestions(iaasResponse[iaasConsts.IaaS])
-        result['networking'] = networkingResponse
-        ingressControllerResponse = ingressControllerQuestions.AskIngressControllerQuestions(iaasResponse[iaasConsts.IaaS])
-        result['ingressController'] = ingressControllerResponse
-        imageRegistryResponse = imgRegistryQuestions.AskImageRegistryQuestions()
-        result['imageRegistry'] = imageRegistryResponse
-        certResponse = certQuestions.AskCertificateQuestions()
-        result['certificate'] = certResponse
-        logMonitoringResponse = logMonQuestions.AskLoggingAndMonitoringQuestions()
-        result['platform'] = logMonitoringResponse
+        state = ask_load_state()
+        customerQuestions.AskCustomerQuestions(state)
+        iaasQuestions.AskIaasQuestions(state)
+        networkingQuestions.AskNetworkingQuestions(state)
+        ingressControllerQuestions.AskIngressControllerQuestions(state)
+        imgRegistryQuestions.AskImageRegistryQuestions(state)
+        certQuestions.AskCertificateQuestions(state)
+        logMonQuestions.AskLoggingAndMonitoringQuestions(state)
 
-        helmCommand = helmCommand + " " + customerQuestions.GetFlagsFromResponse(customerResponse)
-        helmCommand = helmCommand + " " + networkingQuestions.GetFlagsFromResponse(networkingResponse)
-        helmCommand = helmCommand + " " + ingressControllerQuestions.GetFlagsFromResponse(ingressControllerResponse)
-        helmCommand = helmCommand + " " + imgRegistryQuestions.GetFlagsFromResponse(imageRegistryResponse)
-        helmCommand = helmCommand + " " + certQuestions.GetFlagsFromResponse(certResponse)
-        helmCommand = helmCommand + " " + logMonQuestions.GetFlagsFromResponse(logMonitoringResponse)
+        helmCommand = helmCommand + " " + customerQuestions.GetFlagsFromResponse(state)
+        helmCommand = helmCommand + " " + networkingQuestions.GetFlagsFromResponse(state)
+        helmCommand = helmCommand + " " + ingressControllerQuestions.GetFlagsFromResponse(state)
+        helmCommand = helmCommand + " " + imgRegistryQuestions.GetFlagsFromResponse(state)
+        helmCommand = helmCommand + " " + certQuestions.GetFlagsFromResponse(state)
+        helmCommand = helmCommand + " " + logMonQuestions.GetFlagsFromResponse(state)
 
 
     except KeyboardInterrupt:

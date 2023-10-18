@@ -1,11 +1,12 @@
 import questionary
 
 # Constants
+section_name = "certificate"
 CertSecret = "Certificate secret in namespace"
 CertSecretVal = "secret"
 CertManager = "Certificate provided by cert-manager"
 CertManagerVal = "certManager"
-ProphecyManaged = "Prophecy managed DNS and certificate.(ACME protocol backed by Lets-Encrypt)"
+ProphecyManaged = "Prophecy-managed DNS and certificate. (ACME protocol backed by Lets-Encrypt)"
 ProphecyManagedVal = "prophecyManaged"
 CertificateProvider = "certificateProvider"
 RootURL             = "rootURL"
@@ -14,9 +15,9 @@ CertificateIssuer = "certificateIssuer"
 
 # Documentation
 CertificateText = '''
-For certificate management, the customer choose to use between prophecy managed certificate and domain, customer provided
-certificate or leverage cert-manager already installed in the cluster. Cert-manager already installed in the cluster can 
-generate the certificates on demand from ingress resources requiring TLS.
+For certificate management, you can choose to use one of three options: Prophecy-managed certificate and domain, a provided
+certificate or leverage cert-manager already installed in the cluster. If Cert-manager is already installed in the cluster it can 
+generate the certificates on-demand from ingress resources requiring TLS.
 '''
 
 # Prompts
