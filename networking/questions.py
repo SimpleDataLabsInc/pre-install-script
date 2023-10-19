@@ -20,7 +20,7 @@ def IngressQuestions(net_state):
     ]
 
     state_or_defaults(net_state, "ingress", questions)
-    return questionary.prompt(questions)
+    return questionary.unsafe_prompt(questions)
 
     # if result[consts.internetIngress]:
     #     questions = [
@@ -30,7 +30,7 @@ def IngressQuestions(net_state):
     #             'message': consts.prophecyManagedDNSAndCertPromt
     #         },
     #     ]
-    #     r = questionary.prompt(questions)
+    #     r = questionary.unsafe_prompt(questions)
     #     result.update(r)
 
 
@@ -45,7 +45,7 @@ def IngressQuestions(net_state):
     ]
 
     print(consts.egressText)
-    r = questionary.prompt(questions)
+    r = questionary.unsafe_prompt(questions)
     result.update(r)
     return result
 """

@@ -23,7 +23,7 @@ def IaasQuestions(iaas_state):
         },
     ]
     questions = state_or_defaults(iaas_state, [], questions)
-    return questionary.prompt(questions)
+    return questionary.unsafe_prompt(questions)
 
 
 def AWSIaaSQuestions(iaas_state):
@@ -42,7 +42,7 @@ def AWSIaaSQuestions(iaas_state):
         },
     ]
     questions = state_or_defaults(iaas_state, [], questions)
-    return questionary.prompt(questions)
+    return questionary.unsafe_prompt(questions)
 
 def AzureIaaSQuestions(iaas_state):
     questions = [
@@ -61,7 +61,7 @@ def AzureIaaSQuestions(iaas_state):
     ]
 
     questions = state_or_defaults(iaas_state, [], questions)
-    return questionary.prompt(questions)
+    return questionary.unsafe_prompt(questions)
 
 
 def GCPIaaSQuestions(iaas_state):
@@ -82,7 +82,7 @@ def GCPIaaSQuestions(iaas_state):
 
 
     questions = state_or_defaults(iaas_state, [], questions)
-    return questionary.prompt(questions)
+    return questionary.unsafe_prompt(questions)
 
 
 def AskIaasQuestions(global_state):
