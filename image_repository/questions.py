@@ -18,13 +18,13 @@ def AskImageRegistryQuestions(global_state):
             'type': 'text',
             'name': consts.PrivateImageRegistry,
             'message': consts.PrivateImageRegistryPromt,
-            'when': lambda st: st[consts.IsPrivateImageRegistry]
+            'when': lambda st: consts.IsPrivateImageRegistry in st and st[consts.IsPrivateImageRegistry] == True
         },
         {
             'type': 'text',
             'name': consts.PrivateImageRegistrySecret,
             'message': consts.PrivateImageRegistrySecretPromt,
-            'when': lambda st: st[consts.IsPrivateImageRegistry]
+            'when': lambda st: consts.IsPrivateImageRegistry in st and st[consts.IsPrivateImageRegistry] == True
         }
     ]
     questions = state_or_defaults(reg_state, [], questions)
