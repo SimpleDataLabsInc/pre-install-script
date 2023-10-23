@@ -26,7 +26,7 @@ def AskIngressControllerQuestions(global_state):
             'type': 'text',
             'name': consts.IngressControllerClass,
             'message': consts.IngressControllerClassPrompt,
-            'when': lambda st: consts.IngressControllerType in st and st[consts.IngressControllerType] == consts.Nginx or st[consts.IngressControllerType] == consts.Multiple
+            'when': lambda st: consts.IngressControllerType in st and (st[consts.IngressControllerType] == consts.Nginx or st[consts.IngressControllerType] == consts.Multiple)
         },
         {
             'type': 'confirm',
