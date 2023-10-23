@@ -19,25 +19,25 @@ def AskCertificateQuestions(global_state):
             'type': 'text',
             'name': consts.CertificateSecret,
             'message': consts.CertificateSecretPrompt,
-            'when': lambda st: st[consts.CertificateProvider] == consts.CertSecretVal
+            'when': lambda st: consts.CertificateProvider in st and st[consts.CertificateProvider] == consts.CertSecretVal
         },
         {
             'type': 'text',
             'name': consts.RootURL,
             'message': consts.RootURLPrompt,
-            'when': lambda st: st[consts.CertificateProvider] == consts.CertSecretVal
+            'when': lambda st: consts.CertificateProvider in st and st[consts.CertificateProvider] == consts.CertSecretVal
         },
         {
             'type': 'text',
             'name': consts.CertificateIssuer,
             'message': consts.CertificateIssuerPrompt,
-            'when': lambda st: st[consts.CertificateProvider] == consts.CertManagerVal
+            'when': lambda st: consts.CertificateProvider in st and st[consts.CertificateProvider] == consts.CertManagerVal
         },
         {
             'type': 'text',
             'name': consts.RootURL,
             'message': consts.RootURLPrompt,
-            'when': lambda st: st[consts.CertificateProvider] == consts.CertManagerVal
+            'when': lambda st: consts.CertificateProvider in st and st[consts.CertificateProvider] == consts.CertManagerVal
         }
     ]
     questions = state_or_defaults(cert_state, [], questions)
