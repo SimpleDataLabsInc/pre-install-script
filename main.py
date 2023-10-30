@@ -29,7 +29,7 @@ if __name__ == '__main__':
             questionary.print("Unable to load the current release version of Prophecy. Please contact the Prophecy engineer for the current version.", style="bold italic fg:darkred")
             prophecy_version = "<prophecy_version>"
 
-        helmCommand = f"helm upgrade -i prophecy -n prophecy prophecy/prophecy-installer --version {prophecy_version}"
+        helmCommand = f"helm upgrade -i prophecy -n prophecy prophecy/prophecy-installer --version {prophecy_version} --create-namespace"
 
         helmCommand = helmCommand + " " + customerQuestions.GetFlagsFromResponse(state)
         helmCommand = helmCommand + " " + networkingQuestions.GetFlagsFromResponse(state)
