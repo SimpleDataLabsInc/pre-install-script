@@ -1,5 +1,6 @@
 # pre-install-script
 
+
 ## Pre-requisites
 * virtualenv
 ```
@@ -18,3 +19,9 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+## Execute everything with just one command
+```
+curl -sL https://pre-install-script.s3.amazonaws.com/preinstall.sh > preinstall.sh && bash preinstall.sh
+```
+
